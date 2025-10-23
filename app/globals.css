@@ -1,63 +1,53 @@
-/* app/globals.css */
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --color-primary: #0066CC;
-  --color-primary-hover: #0055AA;
-  --color-text: #222222;
-  --color-bg: #FFFFFF;
-  --color-bg-alt: #F7F7F7;
-  --font-family-base: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  font-family: var(--font-family-base);
-  color: var(--color-text);
-  background-color: var(--color-bg);
+  background-color: #ffffff;
+  color: #333333;
+  font-family: inherit;
 }
 
-h1, h2, h3, h4, h5, h6 {
-  color: var(--color-text);
-  font-family: var(--font-family-base);
-  font-weight: 700;
-}
-
-.btn-primary {
+.sc_button {
   display: inline-block;
   padding: 0.75rem 1.5rem;
-  background-color: var(--color-primary);
-  color: white;
+  background-color: transparent;
+  color: #06438a !important;
   text-decoration: none;
-  border: none;
-  border-radius: 4px;
+  border: 2px solid #06438a;
+  border-radius: 0;
   font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: none;
 }
 
-.btn-primary:hover,
-.btn-primary:focus {
-  background-color: var(--color-primary-hover);
+.sc_button:hover {
+  background-color: transparent;
+  color: #06438a !important;
+  border-color: #06438a;
 }
 
-.btn-secondary {
-  display: inline-block;
-  padding: 0.75rem 1.5rem;
-  background-color: #E0E0E0;
-  color: var(--color-text);
-  text-decoration: none;
-  border: none;
-  border-radius: 4px;
-  font-size: 1rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
+.sc_button:active {
+  opacity: 1;
 }
 
-.btn-secondary:hover {
-  background-color: #CCCCCC;
+.sc_button_text {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sc_button_title {
+  display: block;
 }
