@@ -14,21 +14,51 @@ async function initializeSubmissions() {
     const content = await fs.readFile(dataFile, 'utf-8');
     submissions = JSON.parse(content);
     initialized = true;
+    console.log('✅ Fichier JSON charge:', submissions.length, 'formulaires');
   } catch {
     submissions = [];
     initialized = true;
+    console.log('⚠️ Fichier JSON vide (premier demarrage)');
   }
 }
 
-async function saveSubmissions() {
+async function saveToJSON() {
   try {
     const dataDir = path.join(process.cwd(), 'data');
     const dataFile = path.join(dataDir, 'submissions.json');
     
     await fs.mkdir(dataDir, { recursive: true });
     await fs.writeFile(dataFile, JSON.stringify(submissions, null, 2));
+    console.log('✅ Sauvegarde JSON OK');
   } catch (error) {
-    console.error('Erreur sauvegarde:', error);
+    console.error('❌ Erreur sauvegarde JSON:', error);
+  }
+}
+
+async function saveToMongoDB(submission: any) {
+  if (!process.env.MONGODB_URI) {
+    console.log('⚠️ MONGODB_URI non defini - MongoDB ignore');
+    return false;
+  }
+
+  try {
+    const { connectDB, Submission } = await import('@/lib/mongodb');
+    
+    console.log('🔄 Connexion MongoDB...');
+    await connectDB();
+    
+    const mongoSubmission = new Submission({
+      kyc: submission.kyc,
+      esg: submission.esg,
+      status: 'completed'
+    });
+    
+    await mongoSubmission.save();
+    console.log('✅ Sauvegarde MongoDB OK - ID:', mongoSubmission._id.toString());
+    return true;
+  } catch (error) {
+    console.error('❌ Erreur MongoDB:', error instanceof Error ? error.message : error);
+    return false;
   }
 }
 
@@ -50,43 +80,38 @@ export async function POST(request: NextRequest) {
       kyc: data.kyc,
       esg: data.esg,
       submittedAt: new Date().toISOString(),
-      status: 'completed'
+      status: 'completed',
+      mongoSaved: false,
+      mongoId: null
     };
 
+    // Sauvegarder dans JSON d'abord (rapide)
     submissions.push(submission);
+    await saveToJSON();
 
-    // Sauvegarder de manière asynchrone (ne pas bloquer la réponse)
-    saveSubmissions().catch(console.error);
+    // Sauvegarder dans MongoDB (en arrière-plan)
+    saveToMongoDB(submission).then(success => {
+      if (success) {
+        submission.mongoSaved = true;
+        saveToJSON().catch(console.error);
+        console.log('✅ MongoDB synchronise avec JSON');
+      }
+    }).catch(console.error);
 
-    // Essayer MongoDB en arrière-plan si disponible
-    if (process.env.MONGODB_URI) {
-      import('@/lib/mongodb')
-        .then(({ connectDB, Submission }) => {
-          connectDB().then(() => {
-            const mongoSubmission = new Submission({
-              kyc: data.kyc,
-              esg: data.esg,
-              status: 'completed'
-            });
-            return mongoSubmission.save();
-          }).catch(console.error);
-        })
-        .catch(console.error);
-    }
-
-    console.log('✅ Enregistre. Total:', submissions.length);
+    console.log('📊 Soumission #' + submission.id + ' enregistree');
 
     return NextResponse.json(
       {
         success: true,
         message: 'Donnees enregistrees',
         submissionId: submission.id,
-        submittedAt: submission.submittedAt
+        submittedAt: submission.submittedAt,
+        savedIn: ['JSON', process.env.MONGODB_URI ? 'MongoDB (en arriere-plan)' : 'JSON seulement']
       },
       { status: 200 }
     );
   } catch (error) {
-    console.error('Erreur:', error);
+    console.error('❌ Erreur POST:', error);
 
     return NextResponse.json(
       {
@@ -116,18 +141,19 @@ export async function GET(request: NextRequest) {
       }
     }));
 
-    console.log('Reponse:', allSubmissions.length);
+    console.log('📊 Dashboard - Chargement:', allSubmissions.length, 'formulaires');
 
     return NextResponse.json(
       {
         success: true,
         data: allSubmissions,
-        count: allSubmissions.length
+        count: allSubmissions.length,
+        source: 'JSON local'
       },
       { status: 200 }
     );
   } catch (error) {
-    console.error('Erreur GET:', error);
+    console.error('❌ Erreur GET:', error);
 
     return NextResponse.json(
       {
