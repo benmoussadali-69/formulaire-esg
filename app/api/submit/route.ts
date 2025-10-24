@@ -1,130 +1,47 @@
+// app/api/submit/route.ts
 import { NextRequest, NextResponse } from 'next/server';
-import { promises as fs } from 'fs';
-import path from 'path';
-
-const DATA_FILE = path.join(process.cwd(), 'data', 'submissions.json');
-
-async function ensureDataFile() {
-  try {
-    await fs.access(DATA_FILE);
-  } catch {
-    const dir = path.dirname(DATA_FILE);
-    await fs.mkdir(dir, { recursive: true });
-    await fs.writeFile(DATA_FILE, JSON.stringify([], null, 2));
-  }
-}
-
-async function readSubmissions() {
-  try {
-    await ensureDataFile();
-    const content = await fs.readFile(DATA_FILE, 'utf-8');
-    return JSON.parse(content);
-  } catch (error) {
-    console.error('Erreur lecture:', error);
-    return [];
-  }
-}
-
-async function writeSubmissions(data: any[]) {
-  try {
-    await ensureDataFile();
-    await fs.writeFile(DATA_FILE, JSON.stringify(data, null, 2));
-  } catch (error) {
-    console.error('Erreur ecriture:', error);
-  }
-}
+import { connectDB, Submission } from '../../../lib/mongodb'; // ← chemin relatif
 
 export async function POST(request: NextRequest) {
   try {
+    await connectDB();
     const data = await request.json();
 
-    console.log('Donnees reçues:', data);
-
     if (!data.kyc || !data.esg) {
-      return NextResponse.json(
-        { success: false, message: 'Donnees manquantes' },
-        { status: 400 }
-      );
+      return NextResponse.json({ success: false, message: 'Données manquantes' }, { status: 400 });
     }
 
-    const submissions = await readSubmissions();
-
-    const submission = {
-      id: submissions.length + 1,
+    const submission = new Submission({
       kyc: data.kyc,
       esg: data.esg,
-      submittedAt: new Date().toISOString(),
       status: 'completed'
-    };
+    });
 
-    submissions.push(submission);
-    await writeSubmissions(submissions);
+    await submission.save();
 
-    console.log('✅ Enregistre. Total:', submissions.length);
-
-    return NextResponse.json(
-      {
-        success: true,
-        message: 'Donnees enregistrees',
-        submissionId: submission.id,
-        submittedAt: submission.submittedAt,
-        totalSubmissions: submissions.length
-      },
-      { status: 200 }
-    );
+    return NextResponse.json({
+      success: true,
+      message: 'Données enregistrées',
+      submissionId: submission._id.toString(),
+      submittedAt: submission.submittedAt
+    });
   } catch (error) {
     console.error('Erreur:', error);
-
-    return NextResponse.json(
-      {
-        success: false,
-        message: 'Erreur',
-        error: error instanceof Error ? error.message : 'Erreur inconnue'
-      },
-      { status: 500 }
-    );
+    return NextResponse.json({
+      success: false,
+      message: 'Erreur serveur',
+      error: error instanceof Error ? error.message : 'Erreur inconnue'
+    }, { status: 500 });
   }
 }
 
-export async function GET(request: NextRequest) {
+// Ajoutez aussi la fonction GET si vous l'utilisez pour le dashboard
+export async function GET() {
   try {
-    console.log('Lecture des soumissions...');
-
-    const submissions = await readSubmissions();
-
-    console.log('Total soumissions:', submissions.length);
-
-    const allSubmissions = submissions.map((sub: any) => ({
-      ...sub,
-      respondent: {
-        id: sub.id,
-        company_name: sub.kyc.company_name,
-        contact_first_name: sub.kyc.contact_first_name,
-        contact_last_name: sub.kyc.contact_last_name,
-        job_title: sub.kyc.job_title || 'N/A',
-        email: sub.kyc.email,
-        submitted_at: sub.submittedAt
-      }
-    }));
-
-    return NextResponse.json(
-      {
-        success: true,
-        data: allSubmissions,
-        count: allSubmissions.length
-      },
-      { status: 200 }
-    );
+    await connectDB();
+    const submissions = await Submission.find({});
+    return NextResponse.json({ success: true, data: submissions });
   } catch (error) {
-    console.error('Erreur lecture:', error);
-
-    return NextResponse.json(
-      {
-        success: false,
-        message: 'Erreur',
-        data: []
-      },
-      { status: 500 }
-    );
+    return NextResponse.json({ success: false, data: [] }, { status: 500 });
   }
 }
