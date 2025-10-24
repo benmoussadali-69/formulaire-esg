@@ -540,7 +540,7 @@ export default function ESGStepPage() {
     <main className="min-h-screen bg-white">
       <div className="bg-[#06438a]">
         <div className="pl-[310px] pr-[310px] pt-[80px] pb-[80px] text-white">
-          <h1 className="text-3xl font-semibold leading-tight mb-3">
+          <h1 className="text-3xl font-semibold leading-loose mb-4">
             ÉVALUATION PRÉLIMINAIRE DE LA CONFORMITÉ<br />
             <span className="text-3xl font-semibold">AU RÉFÉRENTIEL ESG 1000®</span>
           </h1>
