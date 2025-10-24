@@ -6,6 +6,7 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  border-radius: 0 !important;
 }
 
 html {
@@ -16,6 +17,23 @@ body {
   background-color: #ffffff;
   color: #333333;
   font-family: inherit;
+  border-radius: 0 !important;
+}
+
+input,
+textarea,
+select,
+button,
+div,
+span,
+section,
+article,
+main,
+nav,
+header,
+footer,
+form {
+  border-radius: 0 !important;
 }
 
 .sc_button {
@@ -25,7 +43,7 @@ body {
   color: #06438a !important;
   text-decoration: none;
   border: 2px solid #06438a;
-  border-radius: 0;
+  border-radius: 0 !important;
   font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
@@ -36,18 +54,40 @@ body {
   background-color: transparent;
   color: #06438a !important;
   border-color: #06438a;
+  border-radius: 0 !important;
 }
 
 .sc_button:active {
   opacity: 1;
+  border-radius: 0 !important;
 }
 
 .sc_button_text {
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  border-radius: 0 !important;
 }
 
 .sc_button_title {
   display: block;
+  border-radius: 0 !important;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+textarea,
+select {
+  border-radius: 0 !important;
+}
+
+input[type="radio"],
+input[type="checkbox"] {
+  border-radius: 0 !important;
+}
+
+/* Force tous les elements a avoir des coins carres */
+* {
+  border-radius: 0 !important;
 }

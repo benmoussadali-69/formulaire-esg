@@ -4,16 +4,16 @@ export default function ConfirmationPage() {
   return (
     <main className="min-h-screen bg-white">
       <div className="bg-[#06438a]">
-        <div className="pl-[310px] pr-[310px] pt-[150px] pb-[150px] text-white">
-          <h1 className="text-4xl font-semibold mb-2 leading-tight">
+        <div className="pl-[310px] pr-[310px] pt-[80px] pb-[80px] text-white">
+          <h1 className="text-3xl font-semibold leading-tight mb-3">
             ÉVALUATION PRÉLIMINAIRE DE LA CONFORMITÉ<br />
-            AU RÉFÉRENTIEL ESG 1000®
+            <span className="text-3xl font-semibold">AU RÉFÉRENTIEL ESG 1000®</span>
           </h1>
           <div className="w-12 h-1 bg-white mt-4"></div>
         </div>
       </div>
 
-      <div className="pl-[310px] pr-[310px] pt-[150px] pb-[150px]">
+      <div className="pl-[310px] pr-[310px] pt-[80px] pb-[80px]">
         <div className="max-w-2xl mx-auto">
           <div className="bg-white rounded-none shadow-lg p-12 text-center border border-gray-200">
             <div className="mb-6">

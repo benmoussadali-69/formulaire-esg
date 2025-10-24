@@ -539,16 +539,16 @@ export default function ESGStepPage() {
   return (
     <main className="min-h-screen bg-white">
       <div className="bg-[#06438a]">
-        <div className="pl-[310px] pr-[310px] pt-[150px] pb-[150px] text-white">
-          <h1 className="text-4xl font-semibold mb-2 leading-tight">
+        <div className="pl-[310px] pr-[310px] pt-[80px] pb-[80px] text-white">
+          <h1 className="text-3xl font-semibold leading-tight mb-3">
             ÉVALUATION PRÉLIMINAIRE DE LA CONFORMITÉ<br />
-            AU RÉFÉRENTIEL ESG 1000®
+            <span className="text-3xl font-semibold">AU RÉFÉRENTIEL ESG 1000®</span>
           </h1>
           <div className="w-12 h-1 bg-white mt-4"></div>
         </div>
       </div>
 
-      <div className="pl-[310px] pr-[310px] pt-[150px] pb-[150px]">
+      <div className="pl-[310px] pr-[310px] pt-[80px] pb-[80px]">
         <div className="max-w-4xl mx-auto">
           <div className="mb-8">
             <div className="flex justify-between text-sm text-gray-600 mb-2">
@@ -581,9 +581,10 @@ export default function ESGStepPage() {
                       <textarea
                         value={esgResponses[q.id] || ''}
                         onChange={e => handleResponseChange(q.id, e.target.value)}
-                        className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#06438a]"
+                        className="w-full px-4 py-3 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#06438a]"
                         rows={4}
-                        placeholder="Votre réponse..."
+                        placeholder="Votre reponse..."
+                        style={{ borderRadius: '0' }}
                       />
                     ) : (
                       <div className="space-y-2">
@@ -596,7 +597,7 @@ export default function ESGStepPage() {
                           if (bIndex !== -1) return 1;
                           return a.localeCompare(b);
                         }).map((opt: string) => (
-                          <label key={opt} className="flex items-center cursor-pointer hover:bg-white p-2 rounded transition">
+                          <label key={opt} className="flex items-center cursor-pointer p-2">
                             <input
                               type="radio"
                               name={`q-${q.id}`}
