@@ -17,7 +17,6 @@ body {
   background-color: #ffffff;
   color: #333333;
   font-family: inherit;
-  border-radius: 0 !important;
 }
 
 input,
@@ -36,44 +35,7 @@ form {
   border-radius: 0 !important;
 }
 
-.sc_button {
-  display: inline-block;
-  padding: 0.75rem 1.5rem;
-  background-color: transparent;
-  color: #06438a !important;
-  text-decoration: none;
-  border: 2px solid #06438a;
-  border-radius: 0 !important;
-  font-size: 1rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: none;
-}
-
-.sc_button:hover {
-  background-color: transparent;
-  color: #06438a !important;
-  border-color: #06438a;
-  border-radius: 0 !important;
-}
-
-.sc_button:active {
-  opacity: 1;
-  border-radius: 0 !important;
-}
-
-.sc_button_text {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 0 !important;
-}
-
-.sc_button_title {
-  display: block;
-  border-radius: 0 !important;
-}
-
+/* Input fields - coins carrés */
 input[type="text"],
 input[type="email"],
 input[type="password"],
@@ -87,7 +49,156 @@ input[type="checkbox"] {
   border-radius: 0 !important;
 }
 
-/* Force tous les elements a avoir des coins carres */
-* {
+/* Boutons */
+.btn-primary {
+  display: inline-block;
+  padding: 0.75rem 1.5rem;
+  background-color: #06438a;
+  color: white !important;
+  text-decoration: none;
+  border: none;
   border-radius: 0 !important;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.btn-primary:hover {
+  background-color: #042f5d;
+}
+
+.btn-secondary {
+  display: inline-block;
+  padding: 0.75rem 1.5rem;
+  background-color: transparent;
+  color: #06438a !important;
+  text-decoration: none;
+  border: 2px solid #06438a;
+  border-radius: 0 !important;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.btn-secondary:hover {
+  background-color: #06438a;
+  color: white !important;
+}
+
+/* Cartes - coins carrés */
+.card {
+  background-color: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 0 !important;
+  
+}
+
+/* Titre adaptatif - s'ajuste à la largeur du container parent */
+h1 {
+  font-size: clamp(1.125rem, 4vw, 2.25rem) !important;
+  /*word-wrap: break-word;
+  word-break: break-word;
+  overflow-wrap: break-word;
+  hyphens: auto;*/
+  line-height: 1.3;
+}
+
+/* Responsive design */
+@media (max-width: 767px) {
+  /* Mobile */
+  .btn-primary {
+    padding: 0.5rem 1rem;
+    font-size: 1rem; /* 16px */
+  }
+  .pl-\[310px\] {
+    padding-left: 1.5rem;
+  }
+  
+  .pr-\[310px\] {
+    padding-right: 1.5rem;
+  }
+  
+  .pt-\[150px\] {
+    padding-top: 1rem;
+  }
+  
+  .pb-\[150px\] {
+    padding-bottom: 1rem;
+  }
+  
+  .pt-\[100px\] {
+    padding-top: 1rem;
+  }
+  
+  .pb-\[100px\] {
+    padding-bottom: 1rem;
+  }
+  
+  h1 {
+    font-size: 1rem !important;
+  }
+  
+  h2 {
+    font-size: 1rem !important;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1024px) {
+  /* Tablette */
+  .pl-\[310px\] {
+    padding-left: 2rem;
+  }
+  
+  .pr-\[310px\] {
+    padding-right: 2rem;
+  }
+  
+  .pt-\[150px\] {
+    padding-top: 2rem;
+  }
+  
+  .pb-\[150px\] {
+    padding-bottom: 2rem;
+  }
+  
+  .pt-\[100px\] {
+    padding-top: 1.5rem;
+  }
+  
+  .pb-\[100px\] {
+    padding-bottom: 1.5rem;
+  }
+  
+  h1 {
+    font-size: 2rem !important;
+  }
+}
+
+@media (min-width: 1025px) {
+  /* Desktop */
+  .pl-\[310px\] {
+    padding-left: 310px;
+  }
+  
+  .pr-\[310px\] {
+    padding-right: 310px;
+  }
+  
+  .pt-\[150px\] {
+    padding-top: 150px;
+  }
+  
+  .pb-\[150px\] {
+    padding-bottom: 150px;
+  }
+  
+  .pt-\[100px\] {
+    padding-top: 60px;
+  }
+  
+  .pb-\[100px\] {
+    padding-bottom: 60px;
+  }
 }
