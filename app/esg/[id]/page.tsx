@@ -158,11 +158,12 @@ export default function ESGStepPage() {
       
           <PageHeader />
      
-
-      <div className="pl-[310px] pr-[310px] pt-[100px] pb-[100px]">
-        <div className="flex justify-center">
-          <div>
+ 
+      
+        <div className="flex justify-center pt-[100px] pb-[100px]">
+          <div className="w-full max-w-[800px] px-6">
             <div className="mb-8">
+               
               <div className="flex justify-between text-sm text-gray-600 mb-2">
                 <span>Étape {stepId} sur 11</span>
                 <span>{Math.round((stepId / 11) * 100)}%</span>
@@ -172,7 +173,7 @@ export default function ESGStepPage() {
               </div>
             </div>
 
-            <div className="bg-white p-8 border border-gray-200">
+            <div className="bg-white p-8 border border-gray-200 ">
               <h2 className="text-2xl font-semibold text-[#06438a] mb-6">{stepId}. {currentSection}</h2>
               
               <div className="space-y-6">
@@ -186,7 +187,7 @@ export default function ESGStepPage() {
                         {q.opts.map((opt: string) => (
                           <label key={opt} className="flex items-center p-2 cursor-pointer">
                             <input type="radio" name={`q-${q.id}`} checked={esgResponses[q.id] === opt} onChange={() => handleResponseChange(q.id, opt)} className="h-4 w-4" />
-                            <span className="ml-3">{opt}</span>
+                            <span className="ml-3 text-sm sm:text-base">{opt}</span>
                           </label>
                         ))}
                       </div>
@@ -202,7 +203,7 @@ export default function ESGStepPage() {
             </div>
           </div>
         </div>
-      </div>
+      
     </main>
   );
 }

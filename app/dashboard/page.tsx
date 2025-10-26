@@ -248,7 +248,7 @@ export default function DashboardPage() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await fetch('/api/submit');
+        const res = await fetch('/api/dashboard-data');
         const data = await res.json();
 
         if (data.success && data.data) {
@@ -265,6 +265,7 @@ export default function DashboardPage() {
 
           setRespondents(resps);
           setResponses(respsList);
+  
         }
       } catch (err) {
         console.error('Erreur:', err);
