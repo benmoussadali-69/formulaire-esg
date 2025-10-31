@@ -70,7 +70,7 @@ const MOCK_QUESTIONS: Record<string, Question[]> = {
   "Gouvernance et Stratégie ESG": [
     { id: "q1-1", qn: "1.1", text: "Existe-t-il un comité ou un organe dédié à la gouvernance extra-financière au sein de votre entité ?", type: "radio", opts: ["Oui", "Non", "En cours"] },
     { id: "q1-2", qn: "1.2", text: "L’entité dispose-t-elle d’une politique ou charte de gouvernance extra-financière approuvée par la Direction Générale ou le Conseil d’administration ?", type: "radio", opts: ["Oui", "Non", "En cours"] },
-    { id: "q1-3", qn: "1.3", text: "Cette politique ou charte est-elle communiquée en interne (auprès du personnel, des filiales ou de la direction) ?", type: "radio", opts: ["Oui", "Non"] },
+    { id: "q1-3", qn: "1.3", text: "Cette politique ou charte est-elle communiquée en interne (auprès du personnel, des filiales ou de la direction) ?", type: "radio", opts: ["Oui", "Non", "En cours"] },
     { id: "q1-4", qn: "1.4", text: "L’entité dispose-t-elle d’un code d’éthique ou de conduite, incluant un mécanisme d’alerte pour signaler les manquements ?", type: "radio", opts: ["Oui", "Non", "En cours"] },
     { id: "q1-5", qn: "1.5", text: "L’entité dispose-t-elle de politiques spécifiques sur les thématiques suivantes :", type: "group", subQuestions: [
         { subId: "q1-5a", label: "Environnement", opts: ["Oui", "Non", "En cours"] },
@@ -90,7 +90,7 @@ const MOCK_QUESTIONS: Record<string, Question[]> = {
   ],
 
   "Politiques Environnementales": [
-    { id: "q3-1", qn: "3.1", text: "L’entité dispose-t-elle d’une politique environnementale (énergie, déchets, pollution, biodiversité, liée au changement climatique, etc.)) ?", type: "radio", opts: ["Oui", "Non", "En cours"] },
+    { id: "q3-1", qn: "3.1", text: "L’entité dispose-t-elle d’une politique environnementale (énergie, déchets, pollution, biodiversité, liée au changement climatique, etc.) ?", type: "radio", opts: ["Oui", "Non", "En cours"] },
     { id: "q3-2", qn: "3.2", text: "L’entité mesure-t-elle les émissions GES (Scopes 1, 2 et Scope 3 matériel) et suit-elle des indicateurs environnementaux chiffrés (énergie, déchets, biodiversité, etc.) ?", type: "radio", opts: ["Oui", "Non", "En cours"] },
     { id: "q3-3", qn: "3.3", text: "Quelles actions concrètes sont-elles mises en œuvre pour réduire les impacts environnementaux ?", type: "text" },
     { id: "q3-4", qn: "3.4", text: "L’entité a-t-elle défini des objectifs de réduction des émissions ?", type: "radio", opts: ["Oui", "Non", "En cours"] },
