@@ -124,14 +124,14 @@ const MOCK_QUESTIONS: Record<string, Question[]> = {
   "Éthique, Conformité & Lutte contre la Corruption": [
     { id: "q8-1", qn: "8.1", text: "L’entité dispose-t-elle d’une politique anti-corruption et d'une politique de conformité ?", type: "radio", opts: ["Oui", "Non", "En cours"] },
     { id: "q8-2", qn: "8.2", text: "Comment les politiques sont-elles communiquées et appliquées ?", type: "text" },
-    { id: "q8-3", qn: "8.3", text: "L’entité intègre-t-elle la conformité ESG et éthique dans ses audits internes ou externes ?", type: "radio", opts: ["Oui", "Non", "En cours"] },
+    { id: "q8-3", qn: "8.3", text: "L’entité intègre-t-elle la conformité ESG et l'éthique dans ses audits internes ou externes ?", type: "radio", opts: ["Oui", "Non", "En cours"] },
     { id: "q8-4", qn: "8.4", text: "L’entité propose-t-elle des formations régulières à ses collaborateurs sur la conformité, l’éthique et la lutte anti-corruption ?", type: "radio", opts: ["Oui", "Non", "En cours"] },
   ],
 
   "Communautés & Développement Local": [
     { id: "q9-1", qn: "9.1", text: "L’entité participe-t-elle à des actions de mécénat, inclusion ou développement communautaire ?", type: "radio", opts: ["Oui", "Non", "En cours"] },
     { id: "q9-2", qn: "9.2", text: "Comment les impacts sociaux positifs de ces initiatives sont-ils mesurés ?", type: "text" },
-    { id: "q9-3", qn: "9.3", text: "L’entité évalue-t-elle l’impact socio-économique de ses initiatives locales (emplois, inclusion, services) ?", type: "radio", opts: ["Oui", "Non", "En cours"] },
+    { id: "q9-3", qn: "9.3", text: "L’entité évalue-t-elle l’impact socio-économique de ses initiatives locales (emplois, inclusion, services...etc) ?", type: "radio", opts: ["Oui", "Non", "En cours"] },
   ],
 
   "Communication, Reporting & Transparence": [
