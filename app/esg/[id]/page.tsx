@@ -73,14 +73,14 @@ const SECTIONS = [
 const MOCK_QUESTIONS: Record<string, ConditionalQuestion[]> = {
   "Gouvernance et Stratégie ESG": [
     { id: "q1-1", qn: "1.1", text: "Existe-t-il un comité ou un organe dédié à la gouvernance extra-financière au sein de votre entité ?", type: "radio", opts: ["Oui", "Non", "En cours"] },
-    { id: "q1-2", qn: "1.2", text: "L’entité dispose-t-elle d’une politique ou charte de gouvernance extra-financière approuvée par la Direction Générale   ou le Conseil d’administration ?", type: "radio", opts: ["Oui", "Non", "En cours"] },
-    { id: "q1-3", qn: "", text: "Cette politique ou charte est-elle communiquée en interne (auprès du personnel, des filiales ou de la direction) ?", type: "radio", opts: ["Oui", "Non", "En cours"], showIf: { questionId: "q1-2", answer: ["Oui", "En cours"] } },
-    { id: "q1-4", qn: "1.3", text: "L’entité dispose-t-elle d’un code d’éthique ou de conduite, incluant un mécanisme d’alerte pour signaler les manquements ?", type: "radio", opts: ["Oui", "Non", "En cours"] },
+    { id: "q1-2", qn: "1.2", text: "L'entité dispose-t-elle d'une politique ou charte de gouvernance extra-financière approuvée par la Direction Générale ou le Conseil d'administration ?", type: "radio", opts: ["Oui", "Non", "En cours"] },
+    { id: "q1-3", qn: "", text: "Cette politique ou charte est-elle communiquée en interne ?", type: "radio", opts: ["Oui", "Non", "En cours"], showIf: { questionId: "q1-2", answer: ["Oui", "En cours"] } },
+    { id: "q1-4", qn: "1.3", text: "L'entité dispose-t-elle d'un code d'éthique ou de conduite, incluant un mécanisme d'alerte pour signaler les manquements ?", type: "radio", opts: ["Oui", "Non", "En cours"] },
     { id: "q1-5", qn: "1.4", text: "L'entité dispose-t-elle de politiques spécifiques sur les thématiques suivantes :", type: "group", subQuestions: [
-        { subId: "q1-5a", label: "Environnement", opts: ["Oui", "Non", "En cours"] },
-        { subId: "q1-5b", label: "Sociale et capital humain", opts: ["Oui", "Non", "En cours"] },
-        { subId: "q1-5c", label: "Santé et sécurité au travail", opts: ["Oui", "Non", "En cours"] },
-        { subId: "q1-5d", label: "Investissement ou financement responsable", opts: ["Oui", "Non", "En cours"] },
+        { subId: "q1-5a", label: "Environnement :", opts: ["Oui", "Non", "En cours"] },
+        { subId: "q1-5b", label: "Sociale et capital humain :", opts: ["Oui", "Non", "En cours"] },
+        { subId: "q1-5c", label: "Santé et sécurité au travail :", opts: ["Oui", "Non", "En cours"] },
+        { subId: "q1-5d", label: "Investissement ou financement responsable :", opts: ["Oui", "Non", "En cours"] },
     ]},
     { id: "q1-6", qn: "1.5", text: "Comment la direction intègre-t-elle les enjeux ESG dans les décisions stratégiques ?", type: "text" },
     { id: "q1-7", qn: "1.6", text: "Quels sont les objectifs ESG prioritaires définis à moyen terme (3 à 5 ans) ?", type: "text" },
@@ -184,8 +184,8 @@ export default function ESGStepPage() {
   const currentSection = SECTIONS[stepId - 1];
   const currentQuestions = MOCK_QUESTIONS[currentSection] || [];
   
-  // Filtrer les questions visibles selon les conditions
-  const visibleQuestions = currentQuestions.filter(q => shouldShowQuestion(q, esgResponses));
+  // Filtrer les questions principales (pas les conditionnées)
+  const mainQuestions = currentQuestions.filter(q => !q.showIf);
 
   const handleResponseChange = (id: string, value: string) => {
     const newR = { ...esgResponses, [id]: value };
@@ -194,8 +194,10 @@ export default function ESGStepPage() {
   };
 
   const handleNext = async () => {
-    // Vérifier SEULEMENT les questions visibles
-    const unanswered = visibleQuestions.some(q => {
+    // Vérifier SEULEMENT les questions visibles (principales + conditionnées)
+    const allQuestionsToCheck = currentQuestions.filter(q => shouldShowQuestion(q, esgResponses));
+    
+    const unanswered = allQuestionsToCheck.some(q => {
       if (q.type === 'group' && q.subQuestions) {
         return q.subQuestions.some(sub => !esgResponses[sub.subId]);
       }
@@ -254,65 +256,109 @@ export default function ESGStepPage() {
             </h2>
 
             <div className="space-y-6">
-              {visibleQuestions.map((q: ConditionalQuestion) => (
-                <div key={q.id} className="bg-gray-50 p-4 border border-gray-200">
-                  <h3 className="font-medium text-gray-800 mb-3">
-                    {q.qn && `${q.qn} – `}{q.text}
-                  </h3>
+              {mainQuestions.map((q: ConditionalQuestion) => {
+                // Chercher la question conditionnée liée à celle-ci
+                const conditionalChild = currentQuestions.find(
+                  cq => cq.showIf?.questionId === q.id
+                );
+                const showConditional = conditionalChild && shouldShowQuestion(conditionalChild, esgResponses);
 
-                  {/* Question texte */}
-                  {q.type === 'text' && (
-                    <textarea
-                      value={esgResponses[q.id] || ''}
-                      onChange={(e) => handleResponseChange(q.id, e.target.value)}
-                      className="w-full px-4 py-3 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#06438a]"
-                      rows={3}
-                      placeholder="Votre réponse..."
-                    />
-                  )}
+                return (
+                  <div key={q.id} className="bg-gray-50 p-4 border border-gray-200">
+                    {/* Question principale */}
+                    <h3 className="font-medium text-gray-800 mb-3">
+                      {q.qn && `${q.qn} – `}{q.text}
+                    </h3>
 
-                  {/* Question radio */}
-                  {q.type === 'radio' && q.opts && (
-                    <div className="space-y-2">
-                      {q.opts.map((opt) => (
-                        <label key={opt} className="flex items-center p-2 cursor-pointer">
-                          <input
-                            type="radio"
-                            name={`q-${q.id}`}
-                            checked={esgResponses[q.id] === opt}
-                            onChange={() => handleResponseChange(q.id, opt)}
-                            className="h-4 w-4"
+                    {/* Question texte */}
+                    {q.type === 'text' && (
+                      <textarea
+                        value={esgResponses[q.id] || ''}
+                        onChange={(e) => handleResponseChange(q.id, e.target.value)}
+                        className="w-full px-4 py-3 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#06438a]"
+                        rows={3}
+                        placeholder="Votre réponse..."
+                      />
+                    )}
+
+                    {/* Question radio */}
+                    {q.type === 'radio' && q.opts && (
+                      <div className="space-y-2">
+                        {q.opts.map((opt) => (
+                          <label key={opt} className="flex items-center p-2 cursor-pointer">
+                            <input
+                              type="radio"
+                              name={`q-${q.id}`}
+                              checked={esgResponses[q.id] === opt}
+                              onChange={() => handleResponseChange(q.id, opt)}
+                              className="h-4 w-4"
+                            />
+                            <span className="ml-3 text-sm sm:text-base">{opt}</span>
+                          </label>
+                        ))}
+                      </div>
+                    )}
+
+                    {/* Question groupée */}
+                    {q.type === 'group' && q.subQuestions && (
+                      <div className="space-y-4">
+                        {q.subQuestions.map((sub, index) => (
+                          <div key={sub.subId} className={index === 0 ? "pt-3" : "border-t pt-3"}>
+                            <p className="text-base font-medium mb-2">{sub.label}</p>
+                            {sub.opts.map((opt) => (
+                              <label key={opt} className="flex items-center p-2 cursor-pointer">
+                                <input
+                                  type="radio"
+                                  name={`q-${sub.subId}`}
+                                  checked={esgResponses[sub.subId] === opt}
+                                  onChange={() => handleResponseChange(sub.subId, opt)}
+                                  className="h-4 w-4"
+                                />
+                                <span className="ml-3 text-sm sm:text-base">{opt}</span>
+                              </label>
+                            ))}
+                          </div>
+                        ))}
+                      </div>
+                    )}
+
+                    {/* Question conditionnée - affichée dans la même boîte */}
+                    {showConditional && conditionalChild && (
+                      <>
+                        <p className="text-gray-700 mb-3 mt-4">{conditionalChild.text}</p>
+
+                        {/* Réponse de la question conditionnée */}
+                        {conditionalChild.type === 'text' && (
+                          <textarea
+                            value={esgResponses[conditionalChild.id] || ''}
+                            onChange={(e) => handleResponseChange(conditionalChild.id, e.target.value)}
+                            className="w-full px-4 py-3 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#06438a]"
+                            rows={3}
+                            placeholder="Votre réponse..."
                           />
-                          <span className="ml-3 text-sm sm:text-base">{opt}</span>
-                        </label>
-                      ))}
-                    </div>
-                  )}
+                        )}
 
-                  {/* Question groupée */}
-                  {q.type === 'group' && q.subQuestions && (
-                    <div className="space-y-4">
-                      {q.subQuestions.map((sub) => (
-                        <div key={sub.subId} className="border-t pt-3">
-                          <p className="text-sm font-medium mb-2">{sub.label}</p>
-                          {sub.opts.map((opt) => (
-                            <label key={opt} className="flex items-center p-2 cursor-pointer">
-                              <input
-                                type="radio"
-                                name={`q-${sub.subId}`}
-                                checked={esgResponses[sub.subId] === opt}
-                                onChange={() => handleResponseChange(sub.subId, opt)}
-                                className="h-4 w-4"
-                              />
-                              <span className="ml-3 text-sm sm:text-base">{opt}</span>
-                            </label>
-                          ))}
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              ))}
+                        {conditionalChild.type === 'radio' && conditionalChild.opts && (
+                          <div className="space-y-2">
+                            {conditionalChild.opts.map((opt) => (
+                              <label key={opt} className="flex items-center p-2 cursor-pointer">
+                                <input
+                                  type="radio"
+                                  name={`q-${conditionalChild.id}`}
+                                  checked={esgResponses[conditionalChild.id] === opt}
+                                  onChange={() => handleResponseChange(conditionalChild.id, opt)}
+                                  className="h-4 w-4"
+                                />
+                                <span className="ml-3 text-sm sm:text-base">{opt}</span>
+                              </label>
+                            ))}
+                          </div>
+                        )}
+                      </>
+                    )}
+                  </div>
+                );
+              })}
             </div>
 
             {/* Boutons navigation */}
