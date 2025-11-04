@@ -293,7 +293,7 @@ export default function ESGStepPage() {
                   {q.type === 'group' && q.subQuestions && (
                     <div className="space-y-4">
                       {q.subQuestions.map((sub) => (
-                        <div key={sub.subId} className="border-t pt-3">
+                        <div key={sub.subId} className="py-3">
                           <p className="text-sm font-medium mb-2">{sub.label}</p>
                           {sub.opts.map((opt) => (
                             <label key={opt} className="flex items-center p-2 cursor-pointer">
