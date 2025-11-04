@@ -72,10 +72,10 @@ const SECTIONS = [
 // ---------- QUESTIONS ----------
 const MOCK_QUESTIONS: Record<string, ConditionalQuestion[]> = {
   "Gouvernance et Stratégie ESG": [
-    { id: "q1-1", qn: "1.1", text: "L'entité dispose-t-elle d'une politique ou charte de gouvernance extra-financière approuvée par la Direction Générale ou le Conseil d'administration ?", type: "radio", opts: ["Oui", "Non", "En cours"] },
-    { id: "q1-2", qn: "", text: "Cette politique ou charte est-elle communiquée en interne (auprès du personnel, des filiales ou de la direction) ?", type: "radio", opts: ["Oui", "Non", "En cours"], showIf: { questionId: "q1-1", answer: ["Oui", "En cours"] } },
-    { id: "q1-3", qn: "1.2", text: "Existe-t-il un comité ou un organe dédié à la gouvernance extra-financière au sein de votre entité ?", type: "radio", opts: ["Oui", "Non", "En cours"] },
-    { id: "q1-4", qn: "1.3", text: "L'entité dispose-t-elle d'un code d'éthique ou de conduite, incluant un mécanisme d'alerte pour signaler les manquements ?", type: "radio", opts: ["Oui", "Non", "En cours"] },
+    { id: "q1-1", qn: "1.1", text: "Existe-t-il un comité ou un organe dédié à la gouvernance extra-financière au sein de votre entité ?", type: "radio", opts: ["Oui", "Non", "En cours"] },
+    { id: "q1-2", qn: "1.2", text: "L’entité dispose-t-elle d’une politique ou charte de gouvernance extra-financière approuvée par la Direction Générale   ou le Conseil d’administration ?", type: "radio", opts: ["Oui", "Non", "En cours"] },
+    { id: "q1-3", qn: "", text: "Cette politique ou charte est-elle communiquée en interne (auprès du personnel, des filiales ou de la direction) ?", type: "radio", opts: ["Oui", "Non", "En cours"], showIf: { questionId: "q1-2", answer: ["Oui", "En cours"] } },
+    { id: "q1-4", qn: "1.3", text: "L’entité dispose-t-elle d’un code d’éthique ou de conduite, incluant un mécanisme d’alerte pour signaler les manquements ?", type: "radio", opts: ["Oui", "Non", "En cours"] },
     { id: "q1-5", qn: "1.4", text: "L'entité dispose-t-elle de politiques spécifiques sur les thématiques suivantes :", type: "group", subQuestions: [
         { subId: "q1-5a", label: "Environnement", opts: ["Oui", "Non", "En cours"] },
         { subId: "q1-5b", label: "Sociale et capital humain", opts: ["Oui", "Non", "En cours"] },
